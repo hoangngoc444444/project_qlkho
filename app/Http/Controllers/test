@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Note;
+use App\Product;
+use App\Ware;
+use Illuminate\Http\Request;
+use App\Http\Requests\NoteRequest;
+
+class NoteController extends Controller
+{
+    protected $productModel;
+    protected $noteModel;
+
+    public function __construct(Note $note, Product $product)
+    {
+        $this->noteModel = $note;
+        $this->productModel = $product;
+    }
+
+
+    public function store(NoteRequest $request)
+    {
+        $wareID = $request->id;
+        $name = $request->name;
+        $type = $request->type;
+
+        $note = $this->noteModel->addNote($name, $type, $wareID);
+        $products = $request->productname;
+        $quantity = $request->quantity;
+        foreach ($products as $key => $product) {
+            // $prd = Product::where('name', $product)->first();
+            // if ($prd) {
+            //     if ($type == 2) {
+            //         $prd->quantity += $quantity[$key];
+            //         $prd->save();
+            //     } else {
+            //         if ($prd->quantity > $quantity[$key]) {
+            //             $prd->quantity -= $quantity[$key];
+            //             $prd->save();
+
+
+                    $change = $this->changeQuantity($type, $quantity[$key],$product);
+                    if(!$change){
+                        return redirect()->back()->with('error', "Số lương hàng muốn xuất ra lớn hơn hàng có trong kho");
+                    }
+
+
+                    } else {
+
+                    }
+                }
+            } else {
+                if ($type == 1) {
+                    return redirect()->back()->with('error', "Bạn không có hàng trong kho mà đòi xuất");
+                }
+                // $prd = Product::firstOrCreate([
+                //     'name' => $product,
+                // ], [
+                //     'name' => $product,
+                //     'quantity' => $quantity[$key],
+                // ]);
+                // $prd->wares()->attach($wareID);
+                $this->productModel->addProduct($product, $quantity[$key], $wareID);
+            }
+            $note->products()->attach([$prd->id => ['quantity' => $quantity[$key]]]);
+        }
+
+        return redirect()->back()->with('message', "Xuất nhập kho thành công");
+    }
+
+
+
+    public function addProduct($product, $quantity, $wareID)
+    {
+        $prd = Product::firstOrCreate([
+            'name' => $product,
+        ], [
+            'name' => $product,
+            'quantity' => $quantity
+        ]);
+        $prd->wares()->attach($wareID);
+    }
+
+    public function changeQuantity($type, $quantity, $product)
+    {
+        $prd = Product::where('name', $product)->first();
+        if ($type == 2) {
+            $prd->quantity += $quantity;
+            $prd->save();
+            return 'add';
+        } else {
+            if ($prd->quantity > $quantity) {
+                $prd->quantity -= $quantity;
+                $prd->save();
+                return 'subtract';
+            }
+            return false;
+        }
+    }
+}
