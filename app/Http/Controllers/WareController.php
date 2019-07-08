@@ -77,8 +77,7 @@ class WareController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $user_id)
-    { }
+
 
     /**
      * Update the specified resource in storage.
@@ -87,10 +86,7 @@ class WareController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -98,10 +94,7 @@ class WareController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+
 
     public function showProduct($id)
     {
@@ -118,37 +111,34 @@ class WareController extends Controller
         $user = User::find($id);
 
         if ($field == 'name') {
-            $user_new = User::where('name',$value)->first();
-            if($user_new){
+            $user_new = User::where('name', $value)->first();
+            if ($user_new) {
                 return 'Tên đã trùng với tên trong hệ thống';
-            }else{
+            } else {
                 $user->name = $value;
                 $user->save();
                 return 'Đổi tên thành công';
             }
-
         }
         if ($field == 'email') {
-            $user_new = User::where('email',$value)->first();
-            if($user_new){
+            $user_new = User::where('email', $value)->first();
+            if ($user_new) {
                 return 'Email đã trùng với email trong hệ thống';
-            }else{
+            } else {
                 $user->name = $value;
                 $user->save();
                 return 'success';
             }
-
         }
         if ($field == 'ware') {
-            $ware = Ware::where('name',$value)->first();
-            if($ware){
+            $ware = Ware::where('name', $value)->first();
+            if ($ware) {
                 $ware->user_id = $id;
                 $ware->save();
                 return 'success';
-            }else{
+            } else {
                 return 'Không tồn tại kho này';
             }
-
         }
     }
     public function changeWare(Request $request)
@@ -156,16 +146,13 @@ class WareController extends Controller
         $id = $request->id;
         $value = $request->value;
         $ware = $this->model->getWarebyID($id);
-        $wareNew = Ware::where('name',$value)->first();
-        if($wareNew){
+        $wareNew = Ware::where('name', $value)->first();
+        if ($wareNew) {
             return 'Tên kho đã trùng trong hệ thống';
-        }else{
+        } else {
             $ware->name = $value;
             $ware->save();
             return 'success';
         }
     }
-
-
-
 }
