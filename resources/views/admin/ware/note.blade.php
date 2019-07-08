@@ -13,12 +13,13 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 offset-md-3">
-        <form id="xuatnhapForm" action="{{ route('admin.storenote') }}" method="POST">
+            <form id="xuatnhapForm" action="{{ route('admin.storenote') }}" method="POST">
                 {{ csrf_field() }}
-        <div class="panel-heading" style="color:brown;font-size: large;margin:10px">Nhập thông tin xuất nhập kho của {!! "<b>$ware->name</b>" !!}</div>
+                <div class="panel-heading" style="color:brown;font-size: large;margin:10px">Nhập thông tin xuất nhập kho
+                    của {!! "<b>$ware->name</b>" !!}</div>
                 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Tên xuất nhập kho"
-                        value="{{ old('name') }}">
+                    <input id="nhaptenphieu" type="text" class="form-control" name="name"
+                        placeholder="Tên xuất nhập kho" value="{{ old('name') }}">
                     <span class="help-block">{{ $errors->first('name') }}</span>
                 </div>
 
@@ -28,12 +29,12 @@
                     <input type="radio" name="type" value="2"> Nhập<br>
                     <span class="help-block">{{ $errors->first('type') }}</span>
                 </div>
-            <input type="hidden" id="wareid" name="id" value="{{ $ware->id }}">
-            <span class="help-block">{{ $errors->first('productname') }}</span>
-            <br>
-            <span class="help-block">{{ $errors->first('productname.*') }}</span>
-            <br>
-            <span class="help-block">{{ $errors->first('quantity.*') }}</span>
+                <input type="hidden" id="wareid" name="id" value="{{ $ware->id }}">
+                <span class="help-block">{{ $errors->first('productname') }}</span>
+                <br>
+                <span class="help-block">{{ $errors->first('productname.*') }}</span>
+                <br>
+                <span class="help-block">{{ $errors->first('quantity.*') }}</span>
                 <fieldset id="buildyourform">
                     <legend>Nhập hàng hóa và số lượng hàng hóa</legend>
                 </fieldset>
@@ -50,6 +51,5 @@
 <script src="{{ asset('js/addxuatnhap.js') }}" defer></script>
 @endsection
 @section('css')
-<script src="{{ asset('css/input.css') }}" defer></script>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/input.css') }}">
 @endsection
-

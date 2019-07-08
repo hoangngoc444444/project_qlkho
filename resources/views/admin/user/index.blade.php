@@ -33,6 +33,8 @@
             <th>Ngày tạo</th>
             <th>Ngày cập nhật</th>
         </tr>
+        <div id="countryList" style="color:red"><br>
+        </div>
         @forelse($users ?: [] as $user)
         <tr>
             <td>{{ $user->id }}</td>
@@ -47,8 +49,12 @@
                 </div>
             </td>
             <td>
+                 <i contentEditable='true' class='edit fas fa-plus-square' id='ware_{{ $user->id }}'>Thêm kho</i>
                 @forelse($user->wares ?: [] as $ware)
-                {{"|$ware->name|"}}
+                <div contentEditable='true' class='edit' id='ware_{{ $user->id }}'>
+                    {{"|$ware->name|"}}
+                    <i class="fas fa-trash-alt"></i>
+                </div>
                 @empty
                 No data
                 @endforelse

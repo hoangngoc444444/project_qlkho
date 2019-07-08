@@ -14,6 +14,7 @@ $(document).ready(function() {
         var split_id = id.split("_");
         var field_name = split_id[0];
         var edit_id = split_id[1];
+        // var ware = split_id[2];
         var value = $(this).text();
 
         $.ajax({
@@ -21,9 +22,13 @@ $(document).ready(function() {
             type: 'post',
             data: { field: field_name, value: value, id: edit_id },
             success: function(response) {
-                console.log('Save successfully');
+
+                $('#countryList').fadeIn();
+                $('#countryList').html(response);
+
             }
         });
 
     });
+
 });

@@ -20,6 +20,8 @@
             <th width='10%'>Ngày cập nhật</th>
             <th width='10%'>Chức năng</th>
         </tr>
+        <div id="countryList"><br>
+        </div>
         @forelse($wares ?: [] as $ware)
         <tr>
             <td>{{ $ware->id }}</td>

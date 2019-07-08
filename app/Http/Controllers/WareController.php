@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ware;
+use App\Product;
 use App\User;
 use App\Http\Requests\WareCreateRequest;
 use Illuminate\Support\Facades\Auth;
@@ -77,8 +78,7 @@ class WareController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id, $user_id)
-    {
-    }
+    { }
 
     /**
      * Update the specified resource in storage.
@@ -113,16 +113,42 @@ class WareController extends Controller
     {
         $field = $request->field;
         $id = $request->id;
+
         $value = $request->value;
         $user = User::find($id);
 
         if ($field == 'name') {
-            $user->name = $value;
-            $user->save();
+            $user_new = User::where('name',$value)->first();
+            if($user_new){
+                return 'Tên đã trùng với tên trong hệ thống';
+            }else{
+                $user->name = $value;
+                $user->save();
+                return 'Đổi tên thành công';
+            }
+
         }
         if ($field == 'email') {
-            $user->email = $value;
-            $user->save();
+            $user_new = User::where('email',$value)->first();
+            if($user_new){
+                return 'Email đã trùng với email trong hệ thống';
+            }else{
+                $user->name = $value;
+                $user->save();
+                return 'success';
+            }
+
+        }
+        if ($field == 'ware') {
+            $ware = Ware::where('name',$value)->first();
+            if($ware){
+                $ware->user_id = $id;
+                $ware->save();
+                return 'success';
+            }else{
+                return 'Không tồn tại kho này';
+            }
+
         }
     }
     public function changeWare(Request $request)
@@ -130,7 +156,16 @@ class WareController extends Controller
         $id = $request->id;
         $value = $request->value;
         $ware = $this->model->getWarebyID($id);
-        $ware->name = $value;
-        $ware->save();
+        $wareNew = Ware::where('name',$value)->first();
+        if($wareNew){
+            return 'Tên kho đã trùng trong hệ thống';
+        }else{
+            $ware->name = $value;
+            $ware->save();
+            return 'success';
+        }
     }
+
+
+
 }

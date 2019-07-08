@@ -21,7 +21,9 @@ $(document).ready(function() {
             type: 'post',
             data: { field: field_name, value: value, id: edit_id },
             success: function(response) {
-                console.log('success');
+
+                $('#countryList').fadeIn();
+                $('#countryList').html(response);
             }
         });
 

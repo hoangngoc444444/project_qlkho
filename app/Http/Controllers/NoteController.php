@@ -36,7 +36,7 @@ class NoteController extends Controller
 
             if ($prd) {
                 $change = $this->changeQuantity($type, $quantity[$key], $prd);
-                if ($change == "toobig") {
+                if (!$change) {
                     $note->delete();
                     return redirect()->back()->with('error', "Số lương hàng muốn xuất ra lớn hơn hàng có trong kho");
                 }
@@ -60,12 +60,14 @@ class NoteController extends Controller
         if ($type == 2) {
             $prd->pivot->quantity += $quantity;
             $prd->pivot->save();
+            return true;
         } else {
             if ($prd->pivot->quantity > $quantity) {
                 $prd->pivot->quantity -= $quantity;
                 $prd->pivot->save();
+                return true;
             } else {
-                return 'toobig';
+                return false;
             }
         }
     }

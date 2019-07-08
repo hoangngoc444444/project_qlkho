@@ -57,3 +57,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'auth'], fun
 
 Route::post('/testajax', 'WareController@changeUser')->name('testajax');
 Route::post('/changeware', 'WareController@changeWare')->name('changeware');
+
+Route::post('/search', 'WareController@getSearchAjax')->name('search');
+Route::get('autocomplete', 'AutoCompleteController@search');
+
